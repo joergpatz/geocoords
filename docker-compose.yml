@@ -1,0 +1,18 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo:2.6
+    ports:
+      - "27017:27017"
+    tty: true
+  mongodb-seed:
+    image: mongo:2.6
+    working_dir: /tmp
+    volumes:
+      - ./data/geo.tar.gz:/tmp/geo.tar.gz
+      - ./data/import.sh:/tmp/import.sh
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    entrypoint: ./import.sh
